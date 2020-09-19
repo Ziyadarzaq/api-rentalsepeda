@@ -11,14 +11,7 @@ include "connect.php";
    $gambarsepeda = $_POST['gambarsepeda'];
 
    if (isset($id) &&isset($namasepeda) && isset($kodesepeda) && isset($merksepeda) && isset($jenissepeda) && isset($warnasepeda) && isset($hargasewa) && isset($gambarsepeda)) {
-     SQ = mysqli_query("UPDATE sepeda  WHERE id = '$id',
-       namasepeda = '$namasepeda',
-       kodesepeda = '$kodesepeda',
-       merksepeda = '$merksepeda',
-       jenissepeda = '$jenissepeda',
-      warnasepeda = '$warnasepeda',
-      hargasewa = '$hargasewa',
-       gambarsepeda = '$gambarsepeda'");
+     $query="UPDATE user SET nim='$nim',nama='$nama',jurusan='$jurusan',jenis_kelamin='$jenis_kelamin',alamat='$alamat' where id_mahasiswa='$id_mahasiswa'";
 
        if (SQ) {
          $response = 'success';
