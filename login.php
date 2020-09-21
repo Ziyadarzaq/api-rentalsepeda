@@ -24,6 +24,10 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
             $index['email'] = $row['email'];
             $index['roleuser'] = $row['roleuser'];
             $index['id'] = $row['id'];
+            $index['noktp'] = $row['noktp'];
+            $index['notlp'] = $row['notlp'];
+            $index['alamat'] = $row['alamat'];
+            $index['id'] = $row['id'];
 
             array_push($result['login'], $index);
 
