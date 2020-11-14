@@ -1,11 +1,27 @@
 <?php
- include 'connect.php';
- $hasil         = mysql_query("SELECT * FROM sepeda") or die(mysql_error());
- $json_response = array();
+include "connect.php";  //menyambungkan ke database
 
-if(mysql_num_rows($hasil)> 0){
-while ($row = mysql_fetch_array($hasil)) {
-$json_response[] = $row;
+if($_SERVER['REQUEST_METHOD']=='GET') {
+
+//inisialiasi query READ
+  $query = "SELECT * FROM sepeda ORDER BY kodesepeda";
+ $sql = mysqli_query($conn, $query);//pemanggilan fungsi mysqli_query untuk mengirimkan perintah sesuai parameter yang diisi
+  $result = array(); //inisialisasi array dengan variabel $result
+
+  while($row = mysqli_fetch_array($sql)){
+    array_push($result, array(
+    	'id'=>$row[0],
+    	'namasepeda'=>$row[1],
+      'kodesepeda'=>$row[2],
+    	'merksepeda'=>$row[3],
+    	'jenissepeda'=>$row[4],
+    	'warnasepeda'=>$row[5],
+    	'hargasewa'=>$row[6],
+    	'gambarsepeda'=>$row[7],
+    ));
+  }//melakukan pengulangan dengan while untuk membaca seluruh data pada tabel mahasiswa, dan disimpan didalam row/baris. urutan row harus sesuai urutan pada database
+  echo json_encode($result); //mengeluarkan data dalam bentuk json
+  mysqli_close($conn);
+//tutup koneksi
 }
-echo json_encode(array('sepeda' => $json_response));}
 ?>
