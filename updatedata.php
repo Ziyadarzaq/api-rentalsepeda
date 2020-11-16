@@ -1,43 +1,35 @@
 <?php
-include "connect.php";
-if (isset($_POST['updatedata'])) {
 
-	// AMBIL ID DATA
-	$id = mysqli_real_escape_string($mysqli, $_POST['id']);
-
-	// AMBIL NAMA FILE FOTO SEBELUMNYA
-	$data = mysqli_query($mysqli, "SELECT gambarsepeda FROM sepeda WHERE id='$id'");
-	$dataImage = mysqli_fetch_assoc($data);
-	$oldImage = $dataImage['gambarsepeda'];
-
-	// AMBIL DATA DATA DIDALAM INPUT
-	$namasepeda = mysqli_real_escape_string($mysqli, $_POST['namasepeda']);
-	$kodesepeda = mysqli_real_escape_string($mysqli, $_POST['kodesepeda']);
-	$merksepeda = mysqli_real_escape_string($mysqli, $_POST['merksepeda']);
-  $jenissepeda = mysqli_real_escape_string($mysqli, $_POST['jenissepeda']);
-  $warnasepeda = mysqli_real_escape_string($mysqli, $_POST['warnasepeda']);
-  $hargasewa = mysqli_real_escape_string($mysqli, $_POST['hargasewa']);
-	$filename = $_FILES['newImage']['name'];
+if ($_SERVER['REQUEST_METHOD'] =='POST'){
+    $id = $_POST['id'];
+    $namasepeda = $_POST['namasepeda'];
+    $kodesepeda = $_POST['kodesepeda'];
+    $merksepeda = $_POST['merksepeda'];
+    $jenissepeda = $_POST['jenissepeda'];
+    $warnasepeda = $_POST['warnasepeda'];
+		$hargasewa = $_POST['hargasewa'];
 
 
-  // JIKA FOTO DI GANTI
-  if (!empty($filename)) {
-    $filetmpname = $_FILES['newImage']['tmp_name'];
-    $folder = "img/";
+    require_once 'connect.php';
 
-    // GAMBAR LAMA DI DELETE
-    unlink($folder . $oldImage) or die("GAGAL");
+    $sql = "UPDATE sepeda SET namasepeda='$namasepeda',kodesepeda='$kodesepeda',jenissepeda='$jenissepeda',merksepeda='$merksepeda', warnasepeda='$warnasepeda',hargasewa='$hargasewa' WHERE id = '$id'";
 
-    // GAMBAR BARU DI MASUKAN KE FOLDER
-    move_uploaded_file($filetmpname, $folder . $filename);
 
-    // NAMA FILE FOTO + DATA YANG DI GANTIBARU DIMASUKAN
-    $result = mysqli_query($mysqli, "UPDATE sepeda SET namasepeda='$namasepeda',kodesepeda='$kodesepeda',merksepeda='$merksepeda',jenissepeda='$jenissepeda',warnasepeda='$warnasepeda',hargasewa='$hargasewa',gambarsepeda='$filename' WHERE id=$id");
-  }
+    if( mysqli_query($conn, $sql) ) {
+        $result["success"] = "1";
+        $result["message"] = "success";
 
-  // MEMASUKAN DATA YANG DI UPDATE KECUALI GAMBAR
-  $result = mysqli_query($mysqli, "UPDATE sepeda SET namasepeda='$namasepeda',kodesepeda='$kodesepeda',merksepeda='$merksepeda',jenissepeda='$jenissepeda',warnasepeda='$warnasepeda',hargasewa='$hargasewa',gambarsepeda='$filename' WHERE id=$id");
+        echo json_encode($result);
+        mysqli_close($conn);
 
+    } else {
+
+        $result["success"] = "0";
+        $result["message"] = "error";
+
+        echo json_encode($result);
+        mysqli_close($conn);
+    }
 }
 
 ?>
