@@ -8,19 +8,18 @@ if ($_SERVER['REQUEST_METHOD'] =='POST'){
     $jenissepeda = $_POST['jenissepeda'];
     $warnasepeda = $_POST['warnasepeda'];
     $hargasewa = $_POST['hargasewa'];
-    //$filename = $_FILES['gambarsepeda']['name'];
+    $filename = $_FILES['gambarsepeda']['name'];
 
-    // $filetmpname = $_FILES['gambarsepeda']['tmp_name'];
-    //
-		// 	// FOLDER DIMANA GAMBAR AKAN DI SIMPAN
-		// 	$folder = 'img/';
-		// 	// GAMBAR DI SIMPAN KE DALAM FOLDER
-		// 	move_uploaded_file($filetmpname, $folder . $filename);
+    $filetmpname = $_FILES['gambarsepeda']['tmp_name'];
+
+			// FOLDER DIMANA GAMBAR AKAN DI SIMPAN
+			$folder = 'img/';
+			// GAMBAR DI SIMPAN KE DALAM FOLDER
+			move_uploaded_file($filetmpname, $folder . $filename);
       require_once 'connect.php';
 
-    $sql = "INSERT INTO sepeda (namasepeda, kodesepeda, merksepeda, jenissepeda, warnasepeda, hargasewa)
-    VALUES ('$namasepeda','$kodesepeda','$merksepeda','$jenissepeda','$warnasepeda','$hargasewa')";
-
+    $sql = "INSERT INTO sepeda (namasepeda, kodesepeda, merksepeda, jenissepeda, warnasepeda, hargasewa ,gambarsepeda)
+    VALUES ('$namasepeda','$kodesepeda','$merksepeda','$jenissepeda','$warnasepeda','$hargasewa','$filename')";
 
     if( mysqli_query($conn, $sql) ) {
         $result["success"] = "1";
